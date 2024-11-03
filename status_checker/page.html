@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кружочки с таймером</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        #timer {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .green {
+            background-color: green;
+        }
+        .red {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">Обновлено: 0 сек назад</div>
+    <div id="status-container"></div>
+
+    <script>
+        let secondsSinceLastUpdate = 0;
+        const timerElement = document.getElementById('timer');
+        const statusContainer = document.getElementById('status-container');
+
+        function updateTimer() {
+            timerElement.textContent = `Updated: ${secondsSinceLastUpdate++} sec ago`;
+        }
+
+        function fetchData() {
+            fetch('http://127.0.0.1:80/data') // Замените на URL вашего сервера
+                .then(response => response.json())
+                .then(data => {
+                    statusContainer.innerHTML = '';
+                    Object.entries(data).forEach(([name, value]) => {
+                        const item = document.createElement('div');
+                        item.className = 'item';
+
+                        const circle = document.createElement('div');
+                        circle.className = `circle ${value ? 'green' : 'red'}`;
+                        item.appendChild(circle);
+
+                        const label = document.createElement('span');
+                        label.textContent = name;
+                        item.appendChild(label);
+
+                        statusContainer.appendChild(item);
+                    });
+                    secondsSinceLastUpdate = 0;
+                })
+                .catch(error => console.error('Data loading error:', error));
+        }
+
+        setInterval(updateTimer, 1000);
+        setInterval(fetchData, 61000);
+
+        fetchData();
+    </script>
+</body>
+</html>
