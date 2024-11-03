@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Viewer</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            padding: 20px;
+        }
+        .log-line {
+            margin: 5px 0;
+        }
+        .error {
+            color: red;
+        }
+        .warning {
+            color: yellow;
+        }
+        .info {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Application Logs</h1>
+    <div id="log-content">
+        {% for log in logs %}
+            <div class="log-line {{ log.level }}">{{ log.text }}</div>
+        {% endfor %}
+    </div>
+</body>
+</html>
