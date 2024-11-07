@@ -7,10 +7,12 @@ import datetime
 
 __all__ = ["get_logger"]
 
+now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
 current_file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 os.makedirs(os.path.join(current_file_path, "logs"), exist_ok=True)
-filename = os.path.join(current_file_path, "logs", f"logs_{datetime.datetime.now().strftime('%y-%m-%d_%H-%M')}.log")
+filename = os.path.join(current_file_path, "logs", f"logs_{now}.log")
 
 class LoggingLevel(IntEnum):
     NOTSET = logging.NOTSET
@@ -33,6 +35,7 @@ def get_logger(logger_name: Optional[str] = None, log_consol = True, log_file = 
                     encoding = 'utf-8')
     logger = logging.getLogger(logger_name)
 
+    logger.info(now)
 
     return logger
 
